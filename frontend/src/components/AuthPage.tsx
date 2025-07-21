@@ -82,7 +82,7 @@ const AuthPage = () => {
       const token = response.data.access_token;
       setMessage(`Login successful!`);
       console.log('Access Token:', token);
-      // Here you would typically save the token and redirect the user
+      // LATER: save the token and redirect the user
       // e.g., localStorage.setItem('token', token); navigate('/dashboard');
 
     } catch (err: any) {
@@ -95,7 +95,7 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center">
+    <div className="bg-gray-200 flex flex-col justify-center items-center py-16">
       <div className="max-w-md w-full mx-auto p-4">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-800 mb-2">Fuel the Fire</h1>
@@ -119,7 +119,7 @@ const AuthPage = () => {
             </div>
           </div>
 
-          {/* Display error or success messages */}
+          {/* Display error or success message(s) */}
           {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-4" role="alert">{error}</div>}
           {message && <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg relative mb-4" role="alert">{message}</div>}
 
