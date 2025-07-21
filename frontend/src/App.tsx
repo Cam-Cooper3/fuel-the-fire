@@ -1,11 +1,11 @@
 // frontend/src/App.tsx
 
-import AuthPage from './components/AuthPage';
+import HomePage from './components/HomePage';
 
 function App() {
   return (
     <div>
-      <AuthPage />
+      <HomePage />
     </div>
   );
 }
