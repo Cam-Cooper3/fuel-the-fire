@@ -1,15 +1,23 @@
 // frontend/src/components/AuthPage.tsx
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 // Define base URL for API
-// Should match the address of FastAPI server
 const API_URL = 'http://127.0.0.1:8000';
 
 const AuthPage = () => {
-  // State to toggle between Login and Register forms
-  const [isLogin, setIsLogin] = useState(true);
+  const location = useLocation();
+  
+  // Determine the initial state based on the navigation state
+  const [isLogin, setIsLogin] = useState(location.state?.showLogin !== false);
+
+  // Effect to update the form if the user navigates between login/register while on the page
+  useEffect(() => {
+    setIsLogin(location.state?.showLogin !== false);
+  }, [location.state]);
+
 
   // State for form inputs
   const [fullName, setFullName] = useState('');
@@ -31,7 +39,7 @@ const AuthPage = () => {
     }
 
     try {
-      const response = await axios.post(`${API_URL}/api/v1/users/register`, {
+      await axios.post(`${API_URL}/api/v1/users/register`, {
         full_name: fullName,
         email: email,
         password: password,
@@ -71,11 +79,11 @@ const AuthPage = () => {
         },
       });
       
-      // Temporary success message
-      // Save this token later (e.g., in localStorage or context)
       const token = response.data.access_token;
-      setMessage(`Login successful! Token received.`);
+      setMessage(`Login successful!`);
       console.log('Access Token:', token);
+      // LATER: save the token and redirect the user
+      // e.g., localStorage.setItem('token', token); navigate('/dashboard');
 
     } catch (err: any) {
       if (err.response && err.response.data) {
@@ -87,8 +95,8 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center">
-      <div className="max-w-md w-full mx-auto">
+    <div className="bg-gray-200 flex flex-col justify-center items-center py-16">
+      <div className="max-w-md w-full mx-auto p-4">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-800 mb-2">Fuel the Fire</h1>
           <p className="text-gray-600 mb-8">{isLogin ? 'Welcome back!' : 'Create your account'}</p>
