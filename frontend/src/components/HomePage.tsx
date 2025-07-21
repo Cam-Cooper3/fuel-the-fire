@@ -1,6 +1,7 @@
 // frontend/src/components/HomePage.tsx
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 // Import your custom SVG icons from the assets directory
 import utensilsIcon from '../assets/utensils.svg';
@@ -54,12 +55,12 @@ const HomePage = ({ heroImageUrl = stockMeals }: HomePageProps) => {
             <a href="#" className="py-2 px-3 text-gray-600 hover:text-primary transition">FAQ</a>
           </div>
           <div className="flex items-center space-x-2">
-            <a href="#" className="py-2 px-4 text-primary border border-primary rounded-md hover:bg-primary hover:text-white transition">
+            <Link to="/auth" state={{ showLogin: true }} className="py-2 px-4 text-primary border border-primary rounded-md hover:bg-primary hover:text-white transition">
               Login
-            </a>
-            <a href="#" className="py-2 px-4 bg-primary text-white rounded-md hover:bg-opacity-90 transition">
+            </Link>
+            <Link to="/auth" state={{ showLogin: false }} className="py-2 px-4 bg-primary text-white rounded-md hover:bg-opacity-90 transition">
               Register
-            </a>
+            </Link>
           </div>
         </nav>
       </header>
