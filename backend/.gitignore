@@ -1,3 +1,4 @@
 .env
 venv
 mealprep.db
+__pycache__/
