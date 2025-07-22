@@ -27,7 +27,7 @@ const styles = `
     color: transparent;
     background-clip: text;
     -webkit-background-clip: text;
-    animation: highlight 8s linear infinite;
+    animation: highlight 6s linear infinite;
   }
 `;
 
@@ -38,7 +38,7 @@ const HomePage = ({ heroImageUrl = stockMeals }: HomePageProps) => {
       {/* Hero Section Wrapper */}
       <div className="container mx-auto px-6 pt-8">
         <section 
-          className="relative h-80 bg-cover bg-center text-white rounded-2xl overflow-hidden" 
+          className="relative h-96 bg-cover bg-center text-white rounded-2xl overflow-hidden" 
           style={{ backgroundImage: `url('${heroImageUrl}')` }}
         >
           <div className="absolute inset-0 bg-black bg-opacity-50"></div>
@@ -66,36 +66,39 @@ const HomePage = ({ heroImageUrl = stockMeals }: HomePageProps) => {
       </div>
 
       {/* Welcome Section */}
-      <section className="py-20">
+      <section className="py-12">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-5xl md:text-6xl font-bold tracking-tight text-primary mb-4 text-highlight">Welcome to Fuel the Fire</h2>
           <p className="text-2xl text-gray-700 max-w-3xl mx-auto">
             Our mission is to fuel your journey with intentional meals that balance flavor, macros, and convenience.
           </p>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mt-4">
+            Based in Huntsville, AL
+          </p>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-16">
+      <section className="py-12">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-3 gap-8">
             {/* Card 1 */}
-            <div className="bg-white border rounded-lg shadow-lg p-8 text-center flex flex-col items-center">
-              <img src={utensilsIcon} alt="Meal Prep Icon" className="h-12 w-12" />
-              <h3 className="text-xl font-semibold text-gray-800 mt-6 mb-6">Meal Prep Made Easy</h3>
-              <Link to="/menu" className="mt-auto bg-primary text-white py-2 px-6 rounded-md hover:bg-opacity-90 transition">Menu</Link>
+            <div className="bg-white border rounded-lg shadow-lg p-8 md:py-12 text-center flex flex-col items-center">
+              <img src={utensilsIcon} alt="Meal Prep Icon" className="h-16 w-16" />
+              <h3 className="text-2xl font-semibold text-gray-800 mt-6 mb-6">Meal Prep Made Easy</h3>
+              <Link to="/menu" className="mt-auto bg-primary text-white py-3 px-8 rounded-md hover:bg-opacity-90 transition text-lg">Menu</Link>
             </div>
             {/* Card 2 */}
-            <div className="bg-white border rounded-lg shadow-lg p-8 text-center flex flex-col items-center">
-              <img src={offerIcon} alt="Weekly Specials Icon" className="h-12 w-12" />
-              <h3 className="text-xl font-semibold text-gray-800 mt-6 mb-6">Weekly Specials</h3>
-              <Link to="/specials" className="mt-auto bg-primary text-white py-2 px-6 rounded-md hover:bg-opacity-90 transition">Details</Link>
+            <div className="bg-white border rounded-lg shadow-lg p-8 md:py-12 text-center flex flex-col items-center">
+              <img src={offerIcon} alt="Weekly Specials Icon" className="h-16 w-16" />
+              <h3 className="text-2xl font-semibold text-gray-800 mt-6 mb-6">Weekly Specials</h3>
+              <Link to="/specials" className="mt-auto bg-primary text-white py-3 px-8 rounded-md hover:bg-opacity-90 transition text-lg">Details</Link>
             </div>
             {/* Card 3 */}
-            <div className="bg-white border rounded-lg shadow-lg p-8 text-center flex flex-col items-center">
-              <img src={calendarIcon} alt="Subscription Plans Icon" className="h-12 w-12" />
-              <h3 className="text-xl font-semibold text-gray-800 mt-6 mb-6">Subscription Plans</h3>
-              <Link to="/subscriptions" className="mt-auto bg-primary text-white py-2 px-6 rounded-md hover:bg-opacity-90 transition">Details</Link>
+            <div className="bg-white border rounded-lg shadow-lg p-8 md:py-12 text-center flex flex-col items-center">
+              <img src={calendarIcon} alt="Subscription Plans Icon" className="h-16 w-16" />
+              <h3 className="text-2xl font-semibold text-gray-800 mt-6 mb-6">Subscription Plans</h3>
+              <Link to="/subscriptions" className="mt-auto bg-primary text-white py-3 px-8 rounded-md hover:bg-opacity-90 transition text-lg">Details</Link>
             </div>
           </div>
         </div>
