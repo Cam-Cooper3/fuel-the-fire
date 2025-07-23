@@ -30,6 +30,16 @@ const AuthPage = () => {
     e.preventDefault();
     setError('');
     setMessage('');
+
+    if (!fullName.trim() || !email.trim() || !password) {
+      setError('Please fill in all fields.');
+      return;
+    }
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters long.');
+      return;
+    }
+
     try {
       await axios.post(`${API_URL}/api/v1/users/register`, {
         full_name: fullName,
