@@ -1,7 +1,8 @@
 // frontend/src/components/SharedLayout.tsx
 
 import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 // Import assets
 import logo from '../assets/fuel-the-fire-2.png';
@@ -9,6 +10,14 @@ import instagramIcon from '../assets/instagram.svg';
 import facebookIcon from '../assets/facebook.svg';
 
 const SharedLayout = () => {
+  const { token, user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/'); // Redirect to the homepage after logout
+  };
+
   return (
     <div className="bg-gray-200 font-sans flex flex-col min-h-screen">
       {/* Header */}
@@ -27,17 +36,35 @@ const SharedLayout = () => {
             <Link to="#" className="py-2 px-3 text-gray-600 hover:text-primary transition">FAQ</Link>
           </div>
           <div className="flex items-center space-x-2">
-            <Link to="/auth" state={{ showLogin: true }} className="py-2 px-4 text-primary border border-primary rounded-md hover:bg-primary hover:text-white transition">
-              Login
-            </Link>
-            <Link to="/auth" state={{ showLogin: false }} className="py-2 px-4 bg-primary text-white rounded-md hover:bg-opacity-90 transition">
-              Register
-            </Link>
+            {token && user ? (
+              // Show Account and Logout buttons if user is logged in
+              <>
+                <Link to="/account" className="py-2 px-4 text-primary border border-primary rounded-md hover:bg-primary hover:text-white transition">
+                  My Account
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="py-2 px-4 bg-primary text-white rounded-md hover:bg-opacity-90 transition"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              // Show Login and Register buttons if user is logged out
+              <>
+                <Link to="/auth" state={{ showLogin: true }} className="py-2 px-4 text-primary border border-primary rounded-md hover:bg-primary hover:text-white transition">
+                  Login
+                </Link>
+                <Link to="/auth" state={{ showLogin: false }} className="py-2 px-4 bg-primary text-white rounded-md hover:bg-opacity-90 transition">
+                  Register
+                </Link>
+              </>
+            )}
           </div>
         </nav>
       </header>
 
-      {/* Main Content Area */}
+      {/* Main content area that will grow and push the footer down */}
       <main className="flex-grow">
         {/* The Outlet component renders the current page (e.g., HomePage or AuthPage) */}
         <Outlet />
