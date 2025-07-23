@@ -1,30 +1,28 @@
 // frontend/src/components/AuthPage.tsx
+// Save user token and redirect to account page upon successful login
 
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 
 // Define base URL for API
 const API_URL = 'http://127.0.0.1:8000';
 
 const AuthPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { login } = useAuth();
   
-  // Determine the initial state based on the navigation state
   const [isLogin, setIsLogin] = useState(location.state?.showLogin !== false);
 
-  // Effect to update the form if the user navigates between login/register while on the page
   useEffect(() => {
     setIsLogin(location.state?.showLogin !== false);
   }, [location.state]);
 
-
-  // State for form inputs
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
-  // State for handling messages and errors
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
 
@@ -32,28 +30,16 @@ const AuthPage = () => {
     e.preventDefault();
     setError('');
     setMessage('');
-
-    if (!fullName || !email || !password) {
-      setError('Please fill in all fields.');
-      return;
-    }
-
     try {
       await axios.post(`${API_URL}/api/v1/users/register`, {
         full_name: fullName,
         email: email,
         password: password,
       });
-      
       setMessage('Registration successful! Please log in.');
-      setIsLogin(true); // Switch to login form after successful registration
-      
+      setIsLogin(true);
     } catch (err: any) {
-      if (err.response && err.response.data) {
-        setError(err.response.data.detail || 'Registration failed. Please try again.');
-      } else {
-        setError('An unexpected error occurred.');
-      }
+      setError(err.response?.data?.detail || 'Registration failed.');
     }
   };
 
@@ -61,46 +47,27 @@ const AuthPage = () => {
     e.preventDefault();
     setError('');
     setMessage('');
-
-    if (!email || !password) {
-      setError('Please enter both email and password.');
-      return;
-    }
-    
-    // FastAPI's OAuth2PasswordRequestForm expects form data, not JSON
     const formData = new URLSearchParams();
     formData.append('username', email);
     formData.append('password', password);
 
     try {
       const response = await axios.post(`${API_URL}/api/v1/users/login`, formData, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       });
       
       const token = response.data.access_token;
-      setMessage(`Login successful!`);
-      console.log('Access Token:', token);
-      // LATER: save the token and redirect the user
-      // e.g., localStorage.setItem('token', token); navigate('/dashboard');
+      await login(token); // Use the login function from context
+      navigate('/account'); // Redirect to the account page
 
     } catch (err: any) {
-      if (err.response && err.response.data) {
-        setError(err.response.data.detail || 'Login failed. Please check your credentials.');
-      } else {
-        setError('An unexpected error occurred.');
-      }
+      setError(err.response?.data?.detail || 'Login failed.');
     }
   };
 
   return (
     <div className="bg-gray-200 flex flex-col justify-center items-center py-16">
       <div className="max-w-md w-full mx-auto p-4">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">Fuel the Fire</h1>
-          <p className="text-gray-600 mb-8">{isLogin ? 'Welcome back!' : 'Create your account'}</p>
-        </div>
         <div className="bg-white p-8 rounded-2xl shadow-lg w-full">
           <div className="mb-6">
             <div className="flex border-b">
@@ -119,7 +86,6 @@ const AuthPage = () => {
             </div>
           </div>
 
-          {/* Display error or success message(s) */}
           {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-4" role="alert">{error}</div>}
           {message && <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg relative mb-4" role="alert">{message}</div>}
 
